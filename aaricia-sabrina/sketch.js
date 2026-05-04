@@ -25,7 +25,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(600, 800);
+  createCanvas(window.innerWidth, window.innerHeight);
   for (let i = 1; i <= 4; i++) {
     separators.push((height / 5) * i);
   }
