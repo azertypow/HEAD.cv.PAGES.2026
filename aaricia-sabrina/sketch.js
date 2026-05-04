@@ -25,10 +25,14 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight);
+  const p5canvas = createCanvas(window.innerWidth, window.innerHeight);
   for (let i = 1; i <= 4; i++) {
     separators.push((height / 5) * i);
   }
+
+    p5canvas.elt.addEventListener('pointerdown', (e) => {
+        pointerPressed(e.offsetX, e.offsetY);
+    })
 
   remplirPile();
 }
@@ -113,33 +117,38 @@ function getDeterminant(obj, type) {
 }
 
 function mousePressed() {
-  if (mouseX > width) return;
-
-  for (let i = 0; i < separators.length; i++) {
-    if (abs(mouseY - separators[i]) < 10) {
-      draggingSeparator = i;
-      return;
-    }
-  }
-
-  let zone = -1;
-  if (mouseY < separators[0]) zone = 0;
-  else if (mouseY < separators[1]) zone = 1;
-  else if (mouseY < separators[2]) zone = 2;
-  else if (mouseY < separators[3]) zone = 3;
-  else zone = 4;
-
-  if (!started) {
-    started = true;
-    for (let i = 0; i < 5; i++) updateZone(i);
-  } else {
-    updateZone(zone);
-  }
+    pointerPressed(mouseX, mouseY);
 }
 
 function mouseReleased() {
   draggingSeparator = -1;
 }
+
+function pointerPressed(pointerX, pointerY) {
+    if (pointerX > width) return;
+
+    for (let i = 0; i < separators.length; i++) {
+        if (abs(pointerY - separators[i]) < 10) {
+            draggingSeparator = i;
+            return;
+        }
+    }
+
+    let zone = -1;
+    if (pointerY < separators[0]) zone = 0;
+    else if (pointerY < separators[1]) zone = 1;
+    else if (pointerY < separators[2]) zone = 2;
+    else if (pointerY < separators[3]) zone = 3;
+    else zone = 4;
+
+    if (!started) {
+        started = true;
+        for (let i = 0; i < 5; i++) updateZone(i);
+    } else {
+        updateZone(zone);
+    }
+}
+
 
 function updateZone(i) {
   let data;
