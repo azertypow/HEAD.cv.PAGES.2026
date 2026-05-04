@@ -9,8 +9,8 @@ let bgColorPicker, txtColorPicker, fontSelect, globalFont = 'chaos';
 let exportButton, invertButton, randomColorButton;
 
 // --- VARIABLES DRAG & DROP ---
-let separators = []; 
-let draggingSeparator = -1; 
+let separators = [];
+let draggingSeparator = -1;
 
 // --- DONNÉES ---
 const substantifsData = [ { mot: "contexte", g: "m", n: "s" }, { mot: "excès", g: "m", n: "s" }, { mot: "ouverture", g: "f", n: "s" }, { mot: "abolition", g: "f", n: "s" }, { mot: "limites", g: "f", n: "p" }, { mot: "actualité", g: "f", n: "s" }, { mot: "faculté", g: "f", n: "s" }, { mot: "vie", g: "f", n: "s" }, { mot: "mort", g: "f", n: "s" }, { mot: "objet", g: "m", n: "s" }, { mot: "conclusion", g: "f", n: "s" }, { mot: "possibilité", g: "f", n: "s" }, { mot: "nuit", g: "f", n: "s" }, { mot: "temps", g: "m", n: "p" }, { mot: "sensation", g: "f", n: "s" }, { mot: "perception", g: "f", n: "s" }, { mot: "capacité", g: "f", n: "s" }, { mot: "séjour", g: "m", n: "s" }, { mot: "yeux", g: "m", n: "p" }, { mot: "symbole", g: "m", n: "s" }, { mot: "images", g: "f", n: "p" }, { mot: "informations", g: "f", n: "p" }, { mot: "négativité", g: "f", n: "s" }, { mot: "addition", g: "f", n: "s" }, { mot: "accumulation", g: "f", n: "s" }, { mot: "identique", g: "m", n: "s" }, { mot: "présence", g: "f", n: "s" }, { mot: "positivité", g: "f", n: "s" }, { mot: "profusion", g: "f", n: "s" }, { mot: "communication", g: "f", n: "s" }, { mot: "espaces", g: "m", n: "p" }, { mot: "rattachement", g: "m", n: "s" }, { mot: "démantèlement", g: "m", n: "s" }, { mot: "formes", g: "f", n: "p" }, { mot: "surproduction", g: "f", n: "s" }, { mot: "surconsommation", g: "f", n: "s" }, { mot: "origine", g: "f", n: "s" }, { mot: "infarctus", g: "m", n: "s" }, { mot: "système", g: "m", n: "s" }, { mot: "impératif", g: "m", n: "s" }, { mot: "optimisation", g: "f", n: "s" }, { mot: "performance", g: "f", n: "s" }, { mot: "fermeture", g: "f", n: "s" }, { mot: "logiciels", g: "m", n: "p" }, { mot: "applications", g: "f", n: "p" }, { mot: "domaines", g: "m", n: "p" }, { mot: "contrainte", g: "f", n: "s" }, { mot: "education", g: "f", n: "s" }, { mot: "apprentissage", g: "m", n: "s" }, { mot: "production", g: "f", n: "s" }, { mot: "régime", g: "m", n: "s" }, { mot: "productivité", g: "f", n: "s" }, { mot: "action", g: "f", n: "s" }, { mot: "ego", g: "m", n: "p" }, { mot: "statut", g: "m", n: "s" }, { mot: "autoentrepreneurs", g: "m", n: "p" }, { mot: "liens", g: "m", n: "p" }, { mot: "flexibilité", g: "f", n: "s" }, { mot: "force", g: "f", n: "s" }, { mot: "moyen", g: "m", n: "s" }, { mot: "destruction", g: "f", n: "s" }, { mot: "sujet", g: "m", n: "s" }, { mot: "manière", g: "f", n: "s" }, { mot: "rapports", g: "m", n: "p" }, { mot: "narcissisme", g: "m", n: "s" }, { mot: "travail", g: "m", n: "s" }, { mot: "soi", g: "m", n: "s" }, { mot: "escalade", g: "f", n: "s" }, { mot: "exigences", g: "f", n: "p" }, { mot: "présent", g: "m", n: "s" }, { mot: "insatisfaction", g: "f", n: "s" }, { mot: "moment", g: "m", n: "s" }, { mot: "but", g: "m", n: "s" }, { mot: "expériences", g: "f", n: "p" }, { mot: "caractère", g: "m", n: "s" }, { mot: "pulsions", g: "f", n: "p" }, { mot: "trait", g: "m", n: "s" }, { mot: "niveaux", g: "m", n: "p" }, { mot: "société", g: "f", n: "s" }, { mot: "néolibéralisme", g: "m", n: "s" }, { mot: "mondialisation", g: "f", n: "s" }, { mot: "structures", g: "f", n: "p" }, { mot: "cycle", g: "m", n: "s" }, { mot: "capital", g: "m", n: "s" }, { mot: "marchandises", g: "f", n: "p" }, { mot: "monde", g: "m", n: "s" }, { mot: "marché", g: "m", n: "s" }, { mot: "lieu", g: "m", n: "s" }, { mot: "non-lieu", g: "m", n: "s" }, { mot: "connexion", g: "f", n: "s" }, { mot: "internet", g: "m", n: "s" }, { mot: "touristes", g: "m", n: "p" }, { mot: "recueil", g: "m", n: "s" }, { mot: "titre", g: "m", n: "s" }, { mot: "écrivain", g: "m", n: "s" }, { mot: "village", g: "m", n: "s" }, { mot: "centre", g: "m", n: "s" }, { mot: "poirier", g: "m", n: "s" }, { mot: "proximité", g: "f", n: "s" }, { mot: "ordre", g: "m", n: "s" }, { mot: "pesanteur", g: "f", n: "s" }, { mot: "hommes", g: "m", n: "p" }, { mot: "alliance", g: "f", n: "s" }, { mot: "habitants", g: "m", n: "p" }, { mot: "chant", g: "m", n: "s" }, { mot: "nuits", g: "f", n: "p" }, { mot: "été", g: "m", n: "s" }, { mot: "bruit", g: "m", n: "s" }, { mot: "silence", g: "m", n: "s" }, { mot: "sentiment", g: "m", n: "s" }, { mot: "don", g: "m", n: "s" }, { mot: "conscience", g: "f", n: "s" }, { mot: "milieu", g: "m", n: "s" }, { mot: "contemplation", g: "f", n: "s" }, { mot: "contenu", g: "m", n: "s" }, { mot: "rituels", g: "m", n: "p" }, { mot: "localité", g: "f", n: "s" }, { mot: "mapping", g: "m", n: "s" }, { mot: "sillage", g: "m", n: "s" }, { mot: "numérisation", g: "f", n: "s" }, { mot: "villageois", g: "m", n: "p" }, { mot: "actes", g: "m", n: "p" }, { mot: "personne", g: "f", n: "s" }, { mot: "noms", g: "m", n: "p" }, { mot: "genre", g: "m", n: "s" }, { mot: "communauté", g: "f", n: "s" }, { mot: "récit", g: "m", n: "s" }, { mot: "histoire", g: "f", n: "s" }, { mot: "entente", g: "f", n: "s" }, { mot: "opinions", g: "f", n: "p" }, { mot: "écoute", g: "f", n: "s" }, { mot: "attention", g: "f", n: "s" }, { mot: "bénéficiaire", g: "f", n: "s" }, { mot: "appartenance", g: "f", n: "s" }, { mot: "harmonie", g: "f", n: "s" }, { mot: "place", g: "f", n: "s" }, { mot: "caractéristique", g: "f", n: "s" }, { mot: "sens", g: "m", n: "s" }, { mot: "identity", g: "f", n: "s" }, { mot: "phrase", g: "f", n: "s" }, { mot: "filigrane", g: "m", n: "s" }, { mot: "mélancolie", g: "f", n: "s" }, { mot: "essai", g: "m", n: "s" }, { mot: "arbre", g: "m", n: "s" }, { mot: "naissance", g: "f", n: "s" }, { mot: "perte", g: "f", n: "s" }, { mot: "recommencement", g: "m", n: "s" }, { mot: "canal", g: "m", n: "s" }, { mot: "extrémité", g: "f", n: "s" }, { mot: "lumière", g: "f", n: "s" }, { mot: "utérus", g: "m", n: "s" }, { mot: "mère", g: "f", n: "s" }, { mot: "orifice", g: "m", n: "s" }, { mot: "lèvres", g: "f", n: "p" }, { mot: "décennies", g: "f", n: "p" }, { mot: "perspective", g: "f", n: "s" }, { mot: "filière", g: "f", n: "s" }, { mot: "heure", g: "f", n: "s" }, { mot: "conjonction", g: "f", n: "s" }, { mot: "analogie", g: "f", n: "s" }, { mot: "photos", g: "f", n: "p" }, { mot: "saison", g: "f", n: "s" }, { mot: "photographie", g: "f", n: "s" }, { mot: "collectif", g: "m", n: "s" }, { mot: "hospitalité", g: "f", n: "s" }, { mot: "éloge", g: "m", n: "s" }, { mot: "violence", g: "f", n: "s" }, { mot: "nationalisme", g: "m", n: "s" }, { mot: "besoin", g: "m", n: "s" }, { mot: "exclusion", g: "f", n: "s" }, { mot: "étranger", g: "m", n: "s" }, { mot: "être", g: "m", n: "s" }, { mot: "habitat", g: "m", n: "s" }, { mot: "fondamentaliste", g: "m", n: "s" }, { mot: "différences", g: "f", n: "p" }, { mot: "variations", g: "f", n: "p" }, { mot: "altérité", g: "f", n: "s" }, { mot: "étrangeté", g: "f", n: "s" }, { mot: "enfer", g: "m", n: "s" }, { mot: "réaction", g: "f", n: "s" }, { mot: "fondamentalisme", g: "m", n: "s" }, { mot: "culture", g: "f", n: "s" }, { mot: "reason", g: "f", n: "s" }, { mot: "genèse", g: "f", n: "s" }, { mot: "hétérogénéité", g: "f", n: "s" }, { mot: "élément", g: "m", n: "s" }, { mot: "esprit", g: "m", n: "s" }, { mot: "civilisation", g: "f", n: "s" }, { mot: "mythologie", g: "f", n: "s" }, { mot: "sottise", g: "f", n: "s" }, { mot: "développement", g: "m", n: "s" }, { mot: "race", g: "f", n: "s" }, { mot: "sang", g: "m", n: "s" }, { mot: "amitié", g: "f", n: "s" }, { mot: "puissance", g: "f", n: "s" }, { mot: "formation", g: "f", n: "s" }, { mot: "mesure", g: "f", n: "s" }, { mot: "rétrotopie", g: "f", n: "s" }, { mot: "imaginaire", g: "m", n: "s" }, { mot: "hyperculture", g: "f", n: "s" }, { mot: "frontières", g: "f", n: "p" }, { mot: "agrégat", g: "m", n: "s" }, { mot: "distance", g: "f", n: "s" }, { mot: "hypermarché", g: "m", n: "s" }, { mot: "formule", g: "f", n: "s" }, { mot: "consommation", g: "f", n: "s" }, { mot: "rhizome", g: "m", n: "s" }, { mot: "filiation", g: "f", n: "s" }, { mot: "tissu", g: "m", n: "s" }, { mot: "logique", g: "f", n: "s" }, { mot: "prolifération", g: "f", n: "s" }, { mot: "atopie", g: "f", n: "s" }, { mot: "conséquence", g: "f", n: "s" }, { mot: "âges", g: "m", n: "p" }, { mot: "horloge", g: "f", n: "s" }, { mot: "discontinuité", g: "f", n: "s" }, { mot: "transitions", g: "f", n: "p" }, { mot: "existence", g: "f", n: "s" }, { mot: "consommateurs", g: "m", n: "p" }, { mot: "continuité", g: "f", n: "s" }, { mot: "rites", g: "m", n: "p" }, { mot: "passage", g: "m", n: "s" }, { mot: "seuil", g: "m", n: "s" }, { mot: "phase", g: "f", n: "s" }, { mot: "ordre", g: "m", n: "s" }, { mot: "profit", g: "m", n: "s" }, { mot: "langage", g: "m", n: "s" }, { mot: "enchantement", g: "m", n: "s" }, { mot: "résistance", g: "f", n: "s" }, { mot: "circulation", g: "f", n: "s" }, { mot: "clics", g: "m", n: "p" } ];
@@ -19,7 +19,7 @@ const verbesData = [ { s: "domine", p: "dominent" }, { s: "désapprend", p: "dé
 
 function preload() {
   for (let i = 1; i <= nbTypos; i++) {
-    let path = 'assets/Typo_' + nf(i, 2) + '.otf'; 
+    let path = 'assets/Typo_' + nf(i, 2) + '.otf';
     fonts.push(loadFont(path));
   }
 }
@@ -66,7 +66,7 @@ function draw() {
     let yStart = (i === 0) ? 0 : separators[i - 1];
     let yEnd = (i === 4) ? height : separators[i];
     let h = yEnd - yStart;
-    
+
     let obj = selectedObjects[i];
     if (!obj) continue;
 
@@ -88,14 +88,14 @@ function drawStretchedText(obj, i, ref, targetW, targetH, targetY) {
 
   push();
   textFont(obj.font);
-  textSize(100); 
+  textSize(100);
   textAlign(LEFT, TOP);
   let bbox = obj.font.textBounds(fullText, 0, 0, 100);
   let scaleX = targetW / bbox.w;
   let scaleY = targetH / bbox.h;
   translate(0, targetY);
   scale(scaleX, scaleY);
-  text(fullText, -bbox.x, -bbox.y); 
+  text(fullText, -bbox.x, -bbox.y);
   pop();
 }
 
@@ -106,15 +106,15 @@ function getFinalString(obj, i, ref) {
   return "";
 }
 
-function getDeterminant(obj, type) { 
-  if (type === "defini") { 
-    if (obj.n === "p") return "les "; 
-    if ("aeiouyh".includes(obj.mot[0].toLowerCase())) return "l'"; 
-    return (obj.g === "m") ? "le " : "la "; 
-  } else { 
-    if (obj.n === "p") return "des "; 
-    return (obj.g === "m") ? "un " : "une "; 
-  } 
+function getDeterminant(obj, type) {
+  if (type === "defini") {
+    if (obj.n === "p") return "les ";
+    if ("aeiouyh".includes(obj.mot[0].toLowerCase())) return "l'";
+    return (obj.g === "m") ? "le " : "la ";
+  } else {
+    if (obj.n === "p") return "des ";
+    return (obj.g === "m") ? "un " : "une ";
+  }
 }
 
 function mousePressed() {
@@ -160,11 +160,11 @@ function updateZone(i) {
   let cTxt = color((h + 180) % 360, random(40, 100), (lightness(cBg) > 50) ? 10 : 95);
   colorMode(RGB, 255);
 
-  selectedObjects[i] = { 
-    data: data, 
-    font: getNextFont(), 
-    bg: cBg, 
-    txt: cTxt 
+  selectedObjects[i] = {
+    data: data,
+    font: getNextFont(),
+    bg: cBg,
+    txt: cTxt
   };
 }
 
