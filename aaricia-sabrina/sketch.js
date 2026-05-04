@@ -34,6 +34,10 @@ function setup() {
         pointerPressed(e.offsetX, e.offsetY);
     })
 
+    p5canvas.elt.addEventListener('pointerup', e => {
+        pointerReleased()
+    });
+
   remplirPile();
 }
 
@@ -121,7 +125,11 @@ function mousePressed() {
 }
 
 function mouseReleased() {
-  draggingSeparator = -1;
+    pointerReleased()
+}
+
+function pointerReleased() {
+    draggingSeparator = -1;
 }
 
 function pointerPressed(pointerX, pointerY) {
