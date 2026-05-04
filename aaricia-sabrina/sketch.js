@@ -29,11 +29,6 @@ function setup() {
   for (let i = 1; i <= 4; i++) {
     separators.push((height / 5) * i);
   }
-  
-  let toolX = 620;
-  createP('REGLAGES ').position(toolX, 10).style('font-family', 'sans-serif');
-  exportButton = createButton('Exporter l\'affiche').position(toolX, 50);
-  exportButton.mousePressed(() => save("Affiche_Multi.png"));
 
   remplirPile();
 }
