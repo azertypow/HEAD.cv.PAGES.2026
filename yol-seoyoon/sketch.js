@@ -18,12 +18,13 @@ const INTRO_TEXT =
 let introMarginX = 24;
 let introTopY = 92;
 let introLineH = 34;
-const INTRO_BASE_FONT_SIZE = 40;
+const INTRO_BASE_FONT_SIZE = 50;                    /// *
 let introFontSize = INTRO_BASE_FONT_SIZE;
 let introMaxWidth = 0;
 const INTRO_MIN_FONT_SIZE = 10;
 const INTRO_TARGET_HEIGHT_RATIO = 0.96;
-let INTRO_LINE_HEIGHT_RATIO = 1.85;
+let INTRO_LINE_HEIGHT_RATIO = 1.85;                 /// *
+const INTERLINE_MAX = 20;                           /// *
 let currentBaseFontSize = INTRO_BASE_FONT_SIZE;
 
 let textBlockBottomY = 0;
@@ -140,8 +141,12 @@ const SEMANTIC_DEFAULT_HUE = 215; // fallback blue-grey
 // SETUP
 // --------------------------------------------
 function setup() {
-  createCanvas(600, 800);
-  pixelDensity(10)
+    const posterRatio = 600 / 800
+    const posterHeight = 2000
+    // const posterHeight = 800
+    const posterWidth = posterHeight * posterRatio
+  createCanvas(posterWidth, posterHeight);
+  pixelDensity(4)
   textFont(ui.fontFamily);
   textStyle(NORMAL);
   introMaxWidth = width - introMarginX * 2;
@@ -257,11 +262,11 @@ function buildPanel() {
   title.style("opacity","0.6"); title.parent(panel);
 
   // Typo
-  addSlider(panel,"Taille typo",  16, 52,   40,   1,    v=>{ ui.fontSize=v;   applyTypoFromUI(); },"px",  null,"fontSize");
-  addSlider(panel,"Interlignage", 1.1,3.2, 1.85,  0.01, v=>{ ui.lineHeight=v; applyTypoFromUI(); },"\u00d7",null,"lineHeight");
-  addSlider(panel,"Graisse",      100,900, 400,  100,  v=>{ ui.fontWeight=v; },null, v=>v,"fontWeight");
-  addSlider(panel,"Interlettrage",0,  8,   0,    0.1,  v=>{ ui.letterSpacing=v; applyTypoFromUI(); },"px",null,"letterSpacing");
-  
+  addSlider(panel,"Taille typo",  INTRO_BASE_FONT_SIZE / 3,   INTRO_BASE_FONT_SIZE * 3,     INTRO_BASE_FONT_SIZE,     1,    v=>{ ui.fontSize=v;   applyTypoFromUI(); },"px",  null,"fontSize");
+  addSlider(panel,"Interlignage", INTRO_LINE_HEIGHT_RATIO / 2,  INTRO_LINE_HEIGHT_RATIO * 2,    INTRO_LINE_HEIGHT_RATIO,   0.01, v=>{ ui.lineHeight=v; applyTypoFromUI(); },"\u00d7",null,"lineHeight");
+  addSlider(panel,"Graisse",      100,  900,    400,    100,  v=>{ ui.fontWeight=v; },null, v=>v,"fontWeight");
+  addSlider(panel,"Interlettrage",0,    INTERLINE_MAX,      0,      0.1,  v=>{ ui.letterSpacing=v; applyTypoFromUI(); },"px",null,"letterSpacing");
+
   // Font selector
   addFontSelector(panel);
 
@@ -333,13 +338,13 @@ function addFontSelector(parent) {
   sel.style("width","100%"); sel.style("padding","4px"); sel.style("cursor","pointer");
   sel.style("background","rgba(255,255,255,0.05)"); sel.style("border","1px solid rgba(255,255,255,0.15)");
   sel.style("color","#bbb"); sel.style("border-radius","4px");
-  
+
   for (let font of AVAILABLE_FONTS) {
     sel.option(font);
   }
   sel.value(ui.fontFamily);
   sel.parent(wrap);
-  
+
   sel.changed(() => {
     ui.fontFamily = sel.value();
     textFont(ui.fontFamily);
@@ -424,20 +429,20 @@ function wrapIntroWords(fontSize) {
   let result=[],current="",cw=[];
   textSize(fontSize); textAlign(LEFT,CENTER);
   let spaceW = textWidth(" ");
-  
+
   for (let w of INTRO_TEXT.split(/\s+/).filter(Boolean)) {
     let test=current.length?current+" "+w:w;
-    
+
     // Calculate width accounting for letter-spacing only within words, not between words
     let testWords = test.split(/\s+/);
     let testWidth = testWords.reduce((sum, word) => {
       return sum + textWidth(word) + ui.letterSpacing * max(0, word.length - 1);
     }, 0) + spaceW * (testWords.length - 1);
-    
+
     // Check if line would exceed margins with current letter spacing
-    if (testWidth <= introMaxWidth) { 
-      current=test; 
-      cw.push(w); 
+    if (testWidth <= introMaxWidth) {
+      current=test;
+      cw.push(w);
     }
     else {
       // If single word is too long, try fitting it with reduced letter-spacing
@@ -450,7 +455,7 @@ function wrapIntroWords(fontSize) {
       } else {
         // Start new line
         if (current.length) result.push({text:current, words:cw.slice(), y:0, gone:false});
-        current=w; 
+        current=w;
         cw=[w];
       }
     }
@@ -592,17 +597,17 @@ function isFixedHighlightKeyword(t){return FIXED_HIGHLIGHT_KEYWORDS.has(normaliz
 function computeLineWordLayout(lineObj, justify=false){
   let words=(lineObj&&lineObj.words)?lineObj.words.slice():String(lineObj?.text||"").split(/\s+/).filter(Boolean);
   if(!words.length) return [];
-  
+
   let spW=textWidth(" ");
-  
+
   // Calculate widths with current letter-spacing
   let tWs=words.map(w=>textWidth(w)+ui.letterSpacing*max(0,w.length-1));
   let natW=tWs.reduce((a,b)=>a+b,0)+spW*max(0,words.length-1);
-  
+
   // Calculate optimal letter-spacing to fit within margins
   let optimalLS = ui.letterSpacing;
   let availableWidth = introMaxWidth - MARGIN_SAFETY_BUFFER * 2;
-  
+
   if (natW > availableWidth && words.length > 1) {
     // Text is too wide - need to tighten letter-spacing
     let textWidthWithoutLS = words.reduce((sum,w)=>sum+textWidth(w),0) + spW*(words.length-1);
@@ -621,25 +626,25 @@ function computeLineWordLayout(lineObj, justify=false){
     optimalLS = (availableWidth - textWidthWithoutLS) / max(1, totalLetters - words.length);
     optimalLS = constrain(optimalLS, ui.letterSpacing, TEXT_MAX_LETTER_SPACING);
   }
-  
+
   // Recalculate widths with optimal letter-spacing
   tWs = words.map(w=>textWidth(w)+optimalLS*max(0,w.length-1));
   natW = tWs.reduce((a,b)=>a+b,0)+spW*max(0,words.length-1);
-  
+
   // Calculate inter-word gaps (ensure text still fits within margins)
-  let gapE=0; 
+  let gapE=0;
   if(justify&&words.length>1) {
     let requiredGap = (availableWidth - natW) / (words.length - 1);
     gapE = max(0, requiredGap);
   }
-  
+
   let layout=[],x=introMarginX + MARGIN_SAFETY_BUFFER;
   for(let i=0;i<words.length;i++){
     layout.push({token:words[i],x,w:tWs[i],letterSpacing:optimalLS});
     x+=tWs[i];
     if(i<words.length-1)x+=spW+gapE;
   }
-  
+
   // Ensure layout doesn't exceed right margin
   if (layout.length > 0) {
     let lastWord = layout[layout.length - 1];
@@ -652,7 +657,7 @@ function computeLineWordLayout(lineObj, justify=false){
       }
     }
   }
-  
+
   return layout;
 }
 
@@ -660,7 +665,7 @@ function drawBentTextLine(lineObj,bX,baseY,justify=false){
   fill(textBodyColor()); // always black
   let layout=computeLineWordLayout(lineObj,justify);
   if(!layout.length) return;
-  
+
   for(let k=0;k<layout.length;k++){
     let x=layout[k].x;
     let letterSpacing = layout[k].letterSpacing !== undefined ? layout[k].letterSpacing : ui.letterSpacing;
@@ -1052,7 +1057,7 @@ function randomiseAndReset(){
     ref.sl.value(v);
     ref.valD.html(ref.fmt(v) + ref.unit);
   }
-  
+
   // Sync font selector
   let fontsel = document.querySelector("select");
   if (fontsel) fontsel.value = ui.fontFamily;
@@ -1066,19 +1071,19 @@ function exportA0HighRes() {
   let exportHeight = 14043;
   let origWidth = width;
   let origHeight = height;
-  
+
   // Create high-res canvas
   resizeCanvas(exportWidth, exportHeight);
   pixelDensity(1);
   background(255);
-  
+
   // Scale all drawing parameters
   let scale = exportWidth / origWidth;
   introMarginX *= scale;
   introTopY *= scale;
   introLineH *= scale;
   introFontSize *= scale;
-  
+
   // Redraw everything at high resolution
   bentYCache.clear();
   drawIntroText();
@@ -1089,10 +1094,10 @@ function exportA0HighRes() {
   for (let c of circles) {
     drawNormalCircle(c);
   }
-  
+
   // Save the high-res image
   saveCanvas("sketch_A0_300dpi", "png");
-  
+
   // Restore original canvas
   introMarginX /= scale;
   introTopY /= scale;
