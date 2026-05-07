@@ -1,3 +1,5 @@
+const draggableGap = 50
+
 let fonts = [];
 let nbTypos = 14;
 let pile = [];
@@ -52,7 +54,7 @@ function draw() {
   if (mouseX < width) {
     let onLine = false;
     for (let y of separators) {
-      if (abs(mouseY - y) < 10) onLine = true;
+      if (abs(mouseY - y) < draggableGap) onLine = true;
     }
     cursor(onLine ? 'ns-resize' : ARROW);
   }
@@ -136,7 +138,7 @@ function pointerPressed(pointerX, pointerY) {
     if (pointerX > width) return;
 
     for (let i = 0; i < separators.length; i++) {
-        if (abs(pointerY - separators[i]) < 10) {
+        if (abs(pointerY - separators[i]) < draggableGap) {
             draggingSeparator = i;
             return;
         }
