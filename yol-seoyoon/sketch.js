@@ -142,7 +142,7 @@ const SEMANTIC_DEFAULT_HUE = 215; // fallback blue-grey
 // --------------------------------------------
 function setup() {
     const posterRatio = 600 / 800
-    const posterHeight = 2000
+    const posterHeight = 1370
     // const posterHeight = 800
     const posterWidth = posterHeight * posterRatio
   createCanvas(posterWidth, posterHeight);
