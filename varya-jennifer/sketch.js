@@ -2,8 +2,12 @@ let tasks = [];
 let table;
 
 // Canvas and layout
-let canvasW = 520;
-let canvasH = 700;
+// let canvasW = 520;
+// let canvasH = 700;
+
+let canvasW = window.innerWidth;
+let canvasH = window.innerHeight;
+
 const colMargin = 40;
 const fontSize = 14;       // ← smaller font to fit content
 const taskSpacing = 12;
