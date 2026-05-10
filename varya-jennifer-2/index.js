@@ -31,10 +31,15 @@ new p5((p) => {
     const EXPORT_H = 7022;
 
     p.setup = function() {
-        p.createCanvas(window.innerWidth, window.innerHeight);
+        const p5canvas = p.createCanvas(window.innerWidth, window.innerHeight);
         renderer = new PosterGraphicsRenderer(p);
 
         addRegion(makeRegion(0, 0, p.width, p.height));
+
+        p5canvas.elt.addEventListener('pointerdown', (e) => {
+            // todo: add regions update code for tactile terminal here
+        })
+
     };
 
     p.draw = function() {
@@ -48,31 +53,7 @@ new p5((p) => {
     };
 
     p.mousePressed = function() {
-        for (let i = regions.length - 1; i >= 0; i--) {
-            let r = regions[i];
-            if (p.mouseX > r.x && p.mouseX < r.x + r.w &&
-                p.mouseY > r.y && p.mouseY < r.y + r.h) {
-
-                removeRegion(i);
-
-                let newRegions;
-                if (splitVertical) {
-                    newRegions = [
-                        makeRegion(r.x,       r.y, p.mouseX - r.x,       r.h),
-                        makeRegion(p.mouseX,  r.y, r.x + r.w - p.mouseX, r.h),
-                    ];
-                } else {
-                    newRegions = [
-                        makeRegion(r.x, r.y,       r.w, p.mouseY - r.y),
-                        makeRegion(r.x, p.mouseY,  r.w, r.y + r.h - p.mouseY),
-                    ];
-                }
-
-                for (let nr of newRegions) addRegion(nr);
-                splitVertical = !splitVertical;
-                break;
-            }
-        }
+        updateRegions()
     };
 
     p.keyPressed = function() {
@@ -139,6 +120,34 @@ new p5((p) => {
         pg.remove();
     }
 
+
+    function updateRegions() {
+        for (let i = regions.length - 1; i >= 0; i--) {
+            let r = regions[i];
+            if (p.mouseX > r.x && p.mouseX < r.x + r.w &&
+                p.mouseY > r.y && p.mouseY < r.y + r.h) {
+
+                removeRegion(i);
+
+                let newRegions;
+                if (splitVertical) {
+                    newRegions = [
+                        makeRegion(r.x,       r.y, p.mouseX - r.x,       r.h),
+                        makeRegion(p.mouseX,  r.y, r.x + r.w - p.mouseX, r.h),
+                    ];
+                } else {
+                    newRegions = [
+                        makeRegion(r.x, r.y,       r.w, p.mouseY - r.y),
+                        makeRegion(r.x, p.mouseY,  r.w, r.y + r.h - p.mouseY),
+                    ];
+                }
+
+                for (let nr of newRegions) addRegion(nr);
+                splitVertical = !splitVertical;
+                break;
+            }
+        }
+    }
 
 });
 

@@ -16,7 +16,7 @@ class PosterGraphicsRenderer {
         this._colorBackground = '#FFF';
         this._lineHeight = 0.5;
 
-        p.textFont("Arial Black");
+        p.textFont("sans-serif");
         p.textSize(1000);
 
         // We don't want too much white space around the letters...
@@ -94,7 +94,7 @@ class PosterGraphicsRenderer {
         g.fill(this._colorForeground);
         g.noStroke();
         g.textAlign(p.CENTER, p.TOP);
-        g.textFont("Arial Black");
+        g.textFont("sans-serif");
         g.textSize(1000);
         g.text(letter, this._letterTempWidth / 2, 0);
         this._letters[letter] = g;
